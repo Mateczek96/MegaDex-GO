@@ -282,7 +282,7 @@ function AppHeaderIcon({ className = 'w-10 h-10' }) {
     );
   }
   return (
-    <img src="/icon.png" alt="MegaDex GO" onError={() => setImgFailed(true)} className={`${className} rounded-xl object-cover shrink-0 border border-zinc-800 shadow-md bg-[#0f0f12]`} />
+    <img src="/icon.PNG" alt="MegaDex GO" onError={() => setImgFailed(true)} className={`${className} rounded-xl object-cover shrink-0 border border-zinc-800 shadow-md bg-[#0f0f12]`} />
   );
 }
 

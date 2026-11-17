@@ -1,0 +1,16 @@
+{
+  "name": "MegaDex GO",
+  "short_name": "MegaDex",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0f0f12",
+  "theme_color": "#dc2626",
+  "icons": [
+    {
+      "src": "/icon.PNG",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

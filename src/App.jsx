@@ -497,8 +497,6 @@ export default function App() {
         
         {/* NAGŁÓWEK */}
         <header className="shrink-0 z-30 bg-[#141418] border-b border-zinc-800">
-            <div className="h-1.5 w-full bg-[#dc2626]" />
-          </div>
 
           <div className="px-4 py-3 bg-[#141418]">
             <div className="flex items-center justify-between gap-2">

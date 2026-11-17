@@ -496,7 +496,7 @@ export default function App() {
       <div className="w-full max-w-md h-full bg-[#0f0f12] flex flex-col relative shadow-2xl shadow-black sm:border-x sm:border-zinc-800 overflow-hidden">
         
         {/* NAGŁÓWEK */}
-        <header className="shrink-0 z-30 bg-[#141418] border-b border-zinc-800">
+        <header className="shrink-0 z-30 bg-[#141418] pt-[env(safe-area-inset-top)] border-b border-zinc-800">
 
           <div className="px-4 py-3 bg-[#141418]">
             <div className="flex items-center justify-between gap-2">

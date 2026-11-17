@@ -72,7 +72,7 @@ const MEGA_POKEMON_DB = [
   { id: 'mega_latias', dexNumber: 380, pokeapiId: 10062, name: 'Mega Latias', types: ['Dragon', 'Psychic'], category: 'Legendary', released: 1, shiny_released: 1, super_mega: 0 },
   { id: 'mega_latios', dexNumber: 381, pokeapiId: 10063, name: 'Mega Latios', types: ['Dragon', 'Psychic'], category: 'Legendary', released: 1, shiny_released: 1, super_mega: 0 },
   { id: 'mega_rayquaza', dexNumber: 384, pokeapiId: 10079, name: 'Mega Rayquaza', types: ['Dragon', 'Flying'], category: 'Legendary', released: 1, shiny_released: 1, super_mega: 0 },
-  { id: 'mega_staraptor', dexNumber: 398, pokeapiId: null, name: 'Mega Staraptor', types: ['Fighting', 'Flying'], category: 'Standard', released: 1, shiny_released: 0, super_mega: 0 },
+  { id: 'mega_staraptor', dexNumber: 398, pokeapiId: null, name: 'Mega Staraptor', types: ['Fighting', 'Flying'], category: 'Standard', released: 1, shiny_released: 1, super_mega: 1 },
   { id: 'mega_lopunny', dexNumber: 428, pokeapiId: 10088, name: 'Mega Lopunny', types: ['Normal', 'Fighting'], category: 'Standard', released: 1, shiny_released: 1, super_mega: 0 },
   { id: 'mega_garchomp', dexNumber: 445, pokeapiId: 10058, name: 'Mega Garchomp', types: ['Dragon', 'Ground'], category: 'Standard', released: 1, shiny_released: 1, super_mega: 1 },
   { id: 'mega_garchomp_z', dexNumber: 445, pokeapiId: null, name: 'Mega Garchomp Z', types: ['Dragon'], category: 'Standard', released: 0, shiny_released: 0, super_mega: 0 },

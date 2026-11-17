@@ -188,7 +188,6 @@ function SplashScreen({ isFadingOut }) {
   const [logoFailed, setLogoFailed] = useState(false);
   return (
     <div className={`fixed inset-0 z-[100] bg-[#0f0f12] flex flex-col items-center justify-center px-6 transition-opacity duration-500 ease-out ${isFadingOut ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}>
-      <div className="fixed top-0 left-0 right-0 h-1.5 bg-[#dc2626]" />
       <div className="relative flex flex-col items-center">
         <div className="w-32 h-32 rounded-3xl bg-[#18181b] border-2 border-zinc-800 shadow-2xl shadow-black flex items-center justify-center overflow-hidden mb-6 relative">
           {!logoFailed ? (
@@ -498,7 +497,6 @@ export default function App() {
         
         {/* NAGŁÓWEK */}
         <header className="shrink-0 z-30 bg-[#141418] border-b border-zinc-800">
-          <div className="w-full bg-[#dc2626] pt-[env(safe-area-inset-top)]">
             <div className="h-1.5 w-full bg-[#dc2626]" />
           </div>
 

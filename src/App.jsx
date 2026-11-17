@@ -36,7 +36,7 @@ const MEGA_POKEMON_DB = [
   { id: 'mega_pinsir', dexNumber: 127, pokeapiId: 10040, name: 'Mega Pinsir', types: ['Bug', 'Flying'], category: 'Standard', released: 1, shiny_released: 1, super_mega: 0 },
   { id: 'mega_gyarados', dexNumber: 130, pokeapiId: 10041, name: 'Mega Gyarados', types: ['Water', 'Dark'], category: 'Standard', released: 1, shiny_released: 1, super_mega: 0 },
   { id: 'mega_aerodactyl', dexNumber: 142, pokeapiId: 10042, name: 'Mega Aerodactyl', types: ['Rock', 'Flying'], category: 'Standard', released: 1, shiny_released: 1, super_mega: 0 },
-  { id: 'mega_dragonite', dexNumber: 149, pokeapiId: 10281, name: 'Mega Dragonite', types: ['Dragon', 'Flying'], category: 'Standard', released: 1, shiny_released: 1, super_mega: 0 },
+  { id: 'mega_dragonite', dexNumber: 149, pokeapiId: 10281, name: 'Mega Dragonite', types: ['Dragon', 'Flying'], category: 'Standard', released: 1, shiny_released: 1, super_mega: 1 },
   { id: 'mega_mewtwo_x', dexNumber: 150, pokeapiId: 10043, name: 'Mega Mewtwo X', types: ['Psychic', 'Fighting'], category: 'Legendary', released: 1, shiny_released: 1, super_mega: 1 },
   { id: 'mega_mewtwo_y', dexNumber: 150, pokeapiId: 10044, name: 'Mega Mewtwo Y', types: ['Psychic'], category: 'Legendary', released: 1, shiny_released: 1, super_mega: 1 },
   { id: 'mega_meganium', dexNumber: 154, pokeapiId: 10282, name: 'Mega Meganium', types: ['Grass', 'Fairy'], category: 'Standard', released: 0, shiny_released: 0, super_mega: 0 },

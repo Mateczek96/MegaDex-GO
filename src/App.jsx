@@ -830,14 +830,14 @@ const activeFiltersCount = useMemo(() => {
                   onClick={() => setSummaryMode('released')}
                   className={`py-2 rounded-xl text-xs font-bold transition-all ${summaryMode === 'released' ? 'bg-[#dc2626] text-white shadow' : 'text-zinc-400 hover:text-white'}`}
                 >
-                  Wydane (Released)
+                  Wydane
                 </button>
                 <button
                   type="button"
                   onClick={() => setSummaryMode('unreleased')}
                   className={`py-2 rounded-xl text-xs font-bold transition-all ${summaryMode === 'unreleased' ? 'bg-indigo-600 text-white shadow' : 'text-zinc-400 hover:text-white'}`}
                 >
-                  Niewydane (Unreleased)
+                  Niewydane
                 </button>
               </div>
 

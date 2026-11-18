@@ -999,7 +999,7 @@ const activeFiltersCount = useMemo(() => {
 
         {/* DYNAMICZNY PRZYCISK FAB */}
         {activeTab === 0 && (
-          <div className="absolute bottom-[76px] right-4 left-4 z-30 flex justify-end pointer-events-none">
+          <div className="absolute bottom-[100px] right-4 left-4 z-30 flex justify-end pointer-events-none">
             <button
               type="button"
               onClick={openFilterSheet}

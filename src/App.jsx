@@ -483,16 +483,15 @@ export default function App() {
     };
   }, [fullPokemonList, summaryMode, userProgress]);
 
-  const activeFiltersCount = useMemo(() => {
+const activeFiltersCount = useMemo(() => {
     let count = 0;
     if (!showHundo) count += 1;
     if (!showShiny) count += 1;
-    if (!showReleased || showUnreleased) count += 1;
     if (selectedCategories.length > 0) count += 1;
     if (selectedTypes.length > 0) count += 1;
     if (levelFilter !== 'ALL') count += 1;
     return count;
-  }, [showHundo, showShiny, showReleased, showUnreleased, selectedCategories, selectedTypes, levelFilter]);
+  }, [showHundo, showShiny, selectedCategories, selectedTypes, levelFilter]);
 
   const resetAllFilters = () => {
     setShowHundo(true); setShowShiny(true); setShowReleased(true); setShowUnreleased(false); setSelectedCategories([]); setSelectedTypes([]); setLevelFilter('ALL'); setSortBy('DEX_ASC');

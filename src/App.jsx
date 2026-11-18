@@ -228,6 +228,17 @@ export default function App() {
   const viewportRef = useRef(null);
   const swipeRef = useRef({ active: false, startX: 0, startY: 0, lock: null });
 
+  // Stan wykrywający scrollowanie listy do samego dołu
+  const [isScrolledToBottom, setIsScrolledToBottom] = useState(false);
+  const listContainerRef = useRef(null);
+
+  const handleDexScroll = (e) => {
+    const target = e.currentTarget;
+    const threshold = 40; // piksele od dołu, przy których przycisk zaczyna się rozsuwać
+    const isAtBottom = target.scrollHeight - target.scrollTop - target.clientHeight <= threshold;
+    setIsScrolledToBottom(isAtBottom);
+  };
+
   const [userProgress, setUserProgress] = useState(() => {
     try {
       const saved = localStorage.getItem('megadex_go_progress_v3');
@@ -265,8 +276,8 @@ export default function App() {
   const [showHundo, setShowHundo] = useState(true);
   const [showShiny, setShowShiny] = useState(true);
   const [showReleased, setShowReleased] = useState(true);
-  const [showUnreleased, setShowUnreleased] = useState(false); // Domyślnie odznaczone dla nowych użytkowników
-  const [summaryMode, setSummaryMode] = useState('released'); // 'released' lub 'unreleased' w podsumowaniu
+  const [showUnreleased, setShowUnreleased] = useState(false);
+  const [summaryMode, setSummaryMode] = useState('released');
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [selectedTypes, setSelectedTypes] = useState([]);
   const [levelFilter, setLevelFilter] = useState('ALL');
@@ -339,7 +350,7 @@ export default function App() {
       if (activeTab === 0 && dragOffsetPx < -threshold) setActiveTab(1);
       else if (activeTab === 1 && dragOffsetPx > threshold) setActiveTab(0);
     }
-    swipeRef.current = { active: false, startX: false, startY: 0, lock: null };
+    swipeRef.current = { active: false, startX: 0, startY: 0, lock: null };
     setIsDraggingTab(false); setDragOffsetPx(0);
   };
 
@@ -391,7 +402,6 @@ export default function App() {
 
   const fullPokemonList = useMemo(() => MEGA_POKEMON_DB, []);
 
-  // Obliczanie statystyk w zależności od wybranego trybu w podsumowaniu (released / unreleased)
   const summaryStats = useMemo(() => {
     const targetList = fullPokemonList.filter((p) => (summaryMode === 'released' ? p.released === 1 : p.released === 0));
     const total = targetList.length;
@@ -436,7 +446,7 @@ export default function App() {
     let count = 0;
     if (!showHundo) count += 1;
     if (!showShiny) count += 1;
-    if (!showReleased || showUnreleased) count += 1; // uwzględnienie stanu filtrów
+    if (!showReleased || showUnreleased) count += 1;
     if (selectedCategories.length > 0) count += 1;
     if (selectedTypes.length > 0) count += 1;
     if (levelFilter !== 'ALL') count += 1;
@@ -588,7 +598,11 @@ export default function App() {
             className="h-full flex"
           >
             {/* EKRAN 1: MEGADEX */}
-            <div className="w-1/2 h-full overflow-y-auto overscroll-y-contain px-4 pt-3 pb-32 space-y-3">
+            <div
+              ref={listContainerRef}
+              onScroll={handleDexScroll}
+              className="w-1/2 h-full overflow-y-auto overscroll-y-contain px-4 pt-3 pb-36 space-y-3"
+            >
               {activeFiltersCount > 0 && (
                 <div className="flex items-center gap-1.5 flex-wrap pb-1">
                   {!showHundo && (
@@ -760,14 +774,14 @@ export default function App() {
                   onClick={() => setSummaryMode('released')}
                   className={`py-2 rounded-xl text-xs font-bold transition-all ${summaryMode === 'released' ? 'bg-[#dc2626] text-white shadow' : 'text-zinc-400 hover:text-white'}`}
                 >
-                  Wydane
+                  Wydane (Released)
                 </button>
                 <button
                   type="button"
                   onClick={() => setSummaryMode('unreleased')}
                   className={`py-2 rounded-xl text-xs font-bold transition-all ${summaryMode === 'unreleased' ? 'bg-indigo-600 text-white shadow' : 'text-zinc-400 hover:text-white'}`}
                 >
-                  Niewydane
+                  Niewydane (Unreleased)
                 </button>
               </div>
 
@@ -905,18 +919,29 @@ export default function App() {
           </div>
         </div>
 
-        {/* PRZYCISK FAB */}
+        {/* DYNAMICZNY PRZYCISK FAB (Płynnie rozsuwający się na dole listy) */}
         {activeTab === 0 && (
-          <div className="absolute bottom-24 right-4 z-30">
+          <div className="absolute bottom-24 right-4 left-4 z-30 flex justify-end pointer-events-none">
             <button
               type="button"
               onClick={openFilterSheet}
-              aria-label="Filtry"
-              className="relative w-14 h-14 rounded-full bg-[#dc2626] hover:bg-red-500 text-white flex items-center justify-center shadow-2xl shadow-black border-2 border-white active:scale-90 transition-transform duration-150"
+              aria-label="Filtry i Sortowanie"
+              className={`pointer-events-auto relative bg-[#dc2626] hover:bg-red-500 text-white flex items-center justify-center shadow-2xl shadow-black border-2 border-white active:scale-95 transition-all duration-300 ease-out overflow-hidden ${
+                isScrolledToBottom
+                  ? 'w-full max-w-sm mx-auto h-14 rounded-2xl px-5 gap-3 shadow-[0_10px_25px_rgba(220,38,38,0.5)]'
+                  : 'w-14 h-14 rounded-full'
+              }`}
             >
-              <SlidersHorizontal className="w-6 h-6 stroke-[2.5]" />
+              <SlidersHorizontal className={`shrink-0 transition-transform duration-300 ${isScrolledToBottom ? 'w-5 h-5 stroke-[2.5]' : 'w-6 h-6 stroke-[2.5]'}`} />
+              
+              <span className={`font-black text-sm tracking-tight uppercase whitespace-nowrap transition-all duration-300 ${isScrolledToBottom ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-4 absolute pointer-events-none'}`}>
+                Filtrowanie i Sortowanie
+              </span>
+
               {activeFiltersCount > 0 && (
-                <span className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-white text-[#0f0f12] text-[11px] font-black flex items-center justify-center border-2 border-[#0f0f12]">
+                <span className={`rounded-full bg-white text-[#0f0f12] font-black flex items-center justify-center border-2 border-[#0f0f12] shrink-0 transition-all duration-300 ${
+                  isScrolledToBottom ? 'w-6 h-6 text-xs ml-auto' : 'absolute -top-1 -right-1 w-5 h-5 text-[11px]'
+                }`}>
                   {activeFiltersCount}
                 </span>
               )}

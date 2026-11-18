@@ -583,7 +583,7 @@ const activeFiltersCount = useMemo(() => {
 
       <div className="w-full max-w-md h-full bg-[#0f0f12] flex flex-col relative shadow-2xl shadow-black sm:border-x sm:border-zinc-800 overflow-hidden">
         
-        {/* NAGŁÓWEK Z PANCERNYM WYPEŁNIENIEM GÓRY IOS */}
+        {/* NAGŁÓWEK */}
         <header className="shrink-0 z-30 bg-[#141418] border-b border-zinc-800 relative">
           <div className="absolute top-0 left-0 right-0 bg-[#141418]" style={{ height: 'env(safe-area-inset-top)', transform: 'translateY(-100%)' }} />
           
@@ -1004,7 +1004,7 @@ const activeFiltersCount = useMemo(() => {
               type="button"
               onClick={openFilterSheet}
               aria-label="Filtry i Sortowanie"
-              className={`pointer-events-auto relative bg-[#dc2626] hover:bg-red-500 text-white flex items-center justify-center shadow-2xl shadow-black border-2 border-white active:scale-95 transition-all duration-500 ease-out overflow-visible ${
+              className={`pointer-events-auto relative bg-[#dc2626] hover:bg-red-500 text-white flex items-center justify-center shadow-2xl shadow-black border-2 border-white active:scale-95 transition-all duration-200 ease-out overflow-visible ${
                 isScrolledToBottom
                   ? 'w-full max-w-sm mx-auto h-14 rounded-2xl px-5 gap-3 shadow-[0_10px_25px_rgba(220,38,38,0.5)]'
                   : 'w-14 h-14 rounded-full'
@@ -1033,7 +1033,7 @@ const activeFiltersCount = useMemo(() => {
             <button
               type="button"
               onClick={() => setActiveTab(0)}
-              className={`flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl text-xs font-extrabold transition-all duration-200 active:scale-95 ${
+              className={`flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl text-xs font-extrabold transition-all duration-500 active:scale-95 ${
                 activeTab === 0
                   ? 'bg-[#dc2626] text-white border border-red-400 shadow-md shadow-red-950/40'
                   : 'bg-[#0f0f12] text-zinc-400 hover:text-zinc-200 border border-zinc-800'
@@ -1046,7 +1046,7 @@ const activeFiltersCount = useMemo(() => {
             <button
               type="button"
               onClick={() => setActiveTab(1)}
-              className={`flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl text-xs font-extrabold transition-all duration-200 active:scale-95 ${
+              className={`flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl text-xs font-extrabold transition-all duration-500 active:scale-95 ${
                 activeTab === 1
                   ? 'bg-white text-[#0f0f12] border border-white shadow-md shadow-black/40'
                   : 'bg-[#0f0f12] text-zinc-400 hover:text-zinc-200 border border-zinc-800'

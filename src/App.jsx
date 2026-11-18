@@ -897,33 +897,35 @@ const activeFiltersCount = useMemo(() => {
               </div>
 
               {/* Rozkład poziomów Mega */}
-              <section className="rounded-2xl p-4 bg-[#18181b] border border-zinc-800">
-                <h2 className="text-sm font-bold text-white mb-3">Poziomy Mega ewolucji</h2>
-                <div className="space-y-2">
-                  {[
-                    { lvl: 4, label: 'Poziom 4 (Super Max)', bar: 'bg-gradient-to-r from-[#dc2626] to-amber-400', badge: 'bg-amber-400 text-zinc-950 font-black' },
-                    { lvl: 3, label: 'Poziom 3 (MAX)', bar: 'bg-[#dc2626]', badge: 'bg-[#dc2626] text-white' },
-                    { lvl: 2, label: 'Poziom 2', bar: 'bg-white', badge: 'bg-white text-[#0f0f12]' },
-                    { lvl: 1, label: 'Poziom 1', bar: 'bg-zinc-400', badge: 'bg-zinc-700 text-white' },
-                    { lvl: 0, label: 'Nieodblokowane', bar: 'bg-zinc-700', badge: 'bg-zinc-900 text-zinc-400' }
-                  ].map((item) => {
-                    const count = summaryStats.levels[item.lvl] || 0;
-                    const denom = item.lvl === 4 ? summaryStats.superMegaTotal : summaryStats.total;
-                    const pct = denom > 0 ? Math.round((count / denom) * 100) : 0;
-                    return (
-                      <div key={item.lvl} className="bg-[#0f0f12] p-2.5 rounded-xl border border-zinc-800">
-                        <div className="flex items-center justify-between text-xs mb-1.5">
-                          <span className="font-semibold text-zinc-200">{item.label}</span>
-                          <span className={`text-[11px] font-bold px-2 py-0.5 rounded ${item.badge}`}>{count}/{denom} ({pct}%)</span>
+              {summaryMode === 'released' && (
+                <section className="rounded-2xl p-4 bg-[#18181b] border border-zinc-800">
+                  <h2 className="text-sm font-bold text-white mb-3">Poziomy Mega ewolucji</h2>
+                  <div className="space-y-2">
+                    {[
+                      { lvl: 4, label: 'Poziom 4 (Super Max)', bar: 'bg-gradient-to-r from-[#dc2626] to-amber-400', badge: 'bg-amber-400 text-zinc-950 font-black' },
+                      { lvl: 3, label: 'Poziom 3 (MAX)', bar: 'bg-[#dc2626]', badge: 'bg-[#dc2626] text-white' },
+                      { lvl: 2, label: 'Poziom 2', bar: 'bg-white', badge: 'bg-white text-[#0f0f12]' },
+                      { lvl: 1, label: 'Poziom 1', bar: 'bg-zinc-400', badge: 'bg-zinc-700 text-white' },
+                      { lvl: 0, label: 'Nieodblokowane', bar: 'bg-zinc-700', badge: 'bg-zinc-900 text-zinc-400' }
+                    ].map((item) => {
+                      const count = summaryStats.levels[item.lvl] || 0;
+                      const denom = item.lvl === 4 ? summaryStats.superMegaTotal : summaryStats.total;
+                      const pct = denom > 0 ? Math.round((count / denom) * 100) : 0;
+                      return (
+                        <div key={item.lvl} className="bg-[#0f0f12] p-2.5 rounded-xl border border-zinc-800">
+                          <div className="flex items-center justify-between text-xs mb-1.5">
+                            <span className="font-semibold text-zinc-200">{item.label}</span>
+                            <span className={`text-[11px] font-bold px-2 py-0.5 rounded ${item.badge}`}>{count}/{denom} ({pct}%)</span>
+                          </div>
+                          <div className="w-full h-1.5 bg-zinc-900 rounded-full overflow-hidden">
+                            <div className={`h-full rounded-full ${item.bar} transition-all duration-500`} style={{ width: `${pct}%` }} />
+                          </div>
                         </div>
-                        <div className="w-full h-1.5 bg-zinc-900 rounded-full overflow-hidden">
-                          <div className={`h-full rounded-full ${item.bar} transition-all duration-500`} style={{ width: `${pct}%` }} />
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
-              </section>
+                      );
+                    })}
+                  </div>
+                </section>
+              )}
 
               {/* Specjalne */}
               <section className="rounded-2xl p-4 bg-[#18181b] border border-zinc-800">

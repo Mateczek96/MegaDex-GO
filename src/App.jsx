@@ -1004,28 +1004,43 @@ const activeFiltersCount = useMemo(() => {
               type="button"
               onClick={openFilterSheet}
               aria-label="Filtry i Sortowanie"
-              className={`pointer-events-auto relative bg-[#dc2626] hover:bg-red-500 text-white flex items-center justify-center shadow-2xl shadow-black border-2 border-white active:scale-95 transition-all duration-200 ease-out overflow-visible ${
-                isScrolledToBottom
-                  ? 'w-full max-w-sm mx-auto h-14 rounded-2xl px-5 gap-3 shadow-[0_10px_25px_rgba(220,38,38,0.5)]'
-                  : 'w-14 h-14 rounded-full'
+              style={{
+                width: isScrolledToBottom ? '100%' : '56px',
+                borderRadius: isScrolledToBottom ? '16px' : '28px',
+                transition: 'width 0.42s cubic-bezier(0.22, 1, 0.36, 1), border-radius 0.42s cubic-bezier(0.22, 1, 0.36, 1), background-color 0.2s ease, transform 0.15s ease'
+              }}
+              className={`pointer-events-auto relative h-14 bg-[#dc2626] hover:bg-red-500 text-white flex items-center justify-center shadow-2xl shadow-black border-2 border-white active:scale-95 overflow-visible ${
+                isScrolledToBottom ? 'px-5 gap-3 shadow-[0_10px_25px_rgba(220,38,38,0.5)]' : 'px-0'
               }`}
             >
-              <SlidersHorizontal className={`shrink-0 transition-transform duration-300 ${isScrolledToBottom ? 'w-5 h-5 stroke-[2.5]' : 'w-6 h-6 stroke-[2.5]'}`} />
+              <SlidersHorizontal className="w-5 h-5 stroke-[2.5] shrink-0" />
               
-              <span className={`font-black text-sm tracking-tight uppercase whitespace-nowrap transition-all duration-300 ${isScrolledToBottom ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-4 absolute pointer-events-none'}`}>
+              <span
+                style={{
+                  maxWidth: isScrolledToBottom ? '240px' : '0px',
+                  opacity: isScrolledToBottom ? 1 : 0,
+                  transition: 'max-width 0.38s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.25s ease'
+                }}
+                className="font-black text-sm tracking-tight uppercase whitespace-nowrap overflow-hidden"
+              >
                 Filtrowanie i Sortowanie
               </span>
 
               {activeFiltersCount > 0 && (
-                <span className={`rounded-full bg-white text-[#0f0f12] font-black flex items-center justify-center border-2 border-[#0f0f12] shrink-0 transition-all duration-300 ${
-                  isScrolledToBottom ? 'w-6 h-6 text-xs ml-auto' : 'absolute -top-2 -right-2 w-5 h-5 text-[11px] shadow-md z-20'
-                }`}>
+                <span
+                  className={`rounded-full bg-white text-[#0f0f12] font-black flex items-center justify-center border-2 border-[#0f0f12] shrink-0 transition-all duration-300 ${
+                    isScrolledToBottom
+                      ? 'w-6 h-6 text-xs ml-auto'
+                      : 'absolute -top-2 -right-2 w-5 h-5 text-[11px] shadow-md z-20'
+                  }`}
+                >
                   {activeFiltersCount}
                 </span>
               )}
             </button>
           </div>
         )}
+
 
         {/* DOLNY PASEK NAWIGACJI */}
         <nav className="shrink-0 z-40 bg-[#141418] border-t border-zinc-800 px-3 pt-3 pb-6">

@@ -109,7 +109,7 @@ function PokemonCrossfadeSprite({ dexNumber, pokeapiId, name, isShiny, isMuted }
           }}
           className={`absolute inset-0 w-14 h-14 object-contain transition-all duration-300 ease-out ${
             isShiny ? 'opacity-0 scale-90 pointer-events-none' : 'opacity-100 scale-100'
-          } ${isMuted && !isShiny ? 'grayscale opacity-50' : ''}`}
+          } ${isMuted && !isShiny ? 'grayscale opacity-60' : ''}`}
         />
       ) : (
         !isShiny && (
@@ -228,7 +228,6 @@ export default function App() {
   const viewportRef = useRef(null);
   const swipeRef = useRef({ active: false, startX: 0, startY: 0, lock: null });
 
-  // Stan wykrywający scrollowanie listy do samego dołu
   const [isScrolledToBottom, setIsScrolledToBottom] = useState(false);
   const listContainerRef = useRef(null);
 
@@ -380,7 +379,6 @@ export default function App() {
   };
 
   const toggleShiny = (pokemon) => {
-    if (pokemon.shiny_released !== 1) return;
     const curr = getProgress(pokemon.id);
     const next = !curr.isShiny;
     setUserProgress((prev) => ({ ...prev, [pokemon.id]: { ...curr, isShiny: next } }));
@@ -406,7 +404,7 @@ export default function App() {
     const targetList = fullPokemonList.filter((p) => (summaryMode === 'released' ? p.released === 1 : p.released === 0));
     const total = targetList.length;
     const hundoCount = targetList.filter((p) => getProgress(p.id).isHundo).length;
-    const shinyEligibleList = targetList.filter((p) => p.shiny_released === 1);
+    const shinyEligibleList = targetList.filter((p) => p.shiny_released === 1 || p.released !== 1);
     const shinyTotal = shinyEligibleList.length;
     const shinyCount = shinyEligibleList.filter((p) => getProgress(p.id).isShiny).length;
     const superMegaList = targetList.filter((p) => p.super_mega === 1);
@@ -419,19 +417,19 @@ export default function App() {
       { key: 'Regional', label: 'Regional' }
     ].map((cat) => {
       const items = targetList.filter((p) => p.category === cat.key);
-      const shinyItems = items.filter((p) => p.shiny_released === 1);
+      const shinyItems = items.filter((p) => p.shiny_released === 1 || p.released !== 1);
       const hundo = items.filter((p) => getProgress(p.id).isHundo).length;
       const shiny = shinyItems.filter((p) => getProgress(p.id).isShiny).length;
-      const unlocked = items.filter((p) => getProgress(p.id).megaLevel > 0).length;
+      const unlocked = items.filter((p) => getProgress(p.id).megaLevel > 0 || getProgress(p.id).isShiny || getProgress(p.id).isHundo).length;
       return { ...cat, total: items.length, shinyTotal: shinyItems.length, hundo, shiny, unlocked, pct: items.length > 0 ? Math.round((unlocked / items.length) * 100) : 0 };
     });
 
     const typeBreakdown = ALL_TYPES.map((t) => {
       const items = targetList.filter((p) => p.types.includes(t.key));
-      const shinyItems = items.filter((p) => p.shiny_released === 1);
+      const shinyItems = items.filter((p) => p.shiny_released === 1 || p.released !== 1);
       const hundo = items.filter((p) => getProgress(p.id).isHundo).length;
       const shiny = shinyItems.filter((p) => getProgress(p.id).isShiny).length;
-      const unlocked = items.filter((p) => getProgress(p.id).megaLevel > 0).length;
+      const unlocked = items.filter((p) => getProgress(p.id).megaLevel > 0 || getProgress(p.id).isShiny || getProgress(p.id).isHundo).length;
       return { ...t, total: items.length, shinyTotal: shinyItems.length, hundo, shiny, unlocked, pct: items.length > 0 ? Math.round((unlocked / items.length) * 100) : 0 };
     }).filter((t) => t.total > 0);
 
@@ -509,7 +507,16 @@ export default function App() {
         @keyframes splashProgress {
           0% { width: 0%; } 65% { width: 82%; } 100% { width: 100%; }
         }
+        @keyframes marqueeBounce {
+          0%, 15% { transform: translateX(0); }
+          85%, 100% { transform: translateX(var(--marquee-distance, -30px)); }
+        }
         .animate-card-shine { animation: cardShineSweep 0.72s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+        .marquee-text {
+          display: inline-block;
+          white-space: nowrap;
+          animation: marqueeBounce 6s ease-in-out infinite alternate;
+        }
       `}</style>
 
       {showSplash && <SplashScreen isFadingOut={fadeSplash} />}
@@ -601,7 +608,7 @@ export default function App() {
             <div
               ref={listContainerRef}
               onScroll={handleDexScroll}
-              className="w-1/2 h-full overflow-y-auto overscroll-y-contain px-4 pt-3 pb-24 space-y-3"
+              className="w-1/2 h-full overflow-y-auto overscroll-y-contain px-4 pt-3 pb-20 space-y-3"
             >
               {activeFiltersCount > 0 && (
                 <div className="flex items-center gap-1.5 flex-wrap pb-1">
@@ -652,10 +659,16 @@ export default function App() {
                   const shouldHighlightMega = isReleased && megaLevel > 0 && !isHundo && !(isShiny && pokemon.shiny_released === 1);
 
                   let cardBorderClass = 'bg-[#18181b] border-zinc-800';
-                  if (!isReleased) cardBorderClass = 'bg-[#151518] border-zinc-800/60 opacity-90';
-                  else if (shouldHighlightMega) cardBorderClass = 'bg-[#1c1c21] border-white shadow-md shadow-white/10';
-                  else if (isHundo) cardBorderClass = 'bg-[#1b1719] border-[#dc2626] shadow-md shadow-red-950/20';
-                  else if (isShiny && pokemon.shiny_released === 1) cardBorderClass = 'bg-[#1a1916] border-amber-500/60';
+                  if (!isReleased) {
+                    // Niewydane pokemony w kolorystyce wydanych, ale z linią przerywaną
+                    if (isHundo) cardBorderClass = 'bg-[#1b1719] border-[#dc2626] border-dashed shadow-md shadow-red-950/20';
+                    else if (isShiny) cardBorderClass = 'bg-[#1a1916] border-amber-500/60 border-dashed';
+                    else cardBorderClass = 'bg-[#18181b] border-zinc-700 border-dashed opacity-95';
+                  } else {
+                    if (shouldHighlightMega) cardBorderClass = 'bg-[#1c1c21] border-white shadow-md shadow-white/10';
+                    else if (isHundo) cardBorderClass = 'bg-[#1b1719] border-[#dc2626] shadow-md shadow-red-950/20';
+                    else if (isShiny && pokemon.shiny_released === 1) cardBorderClass = 'bg-[#1a1916] border-amber-500/60';
+                  }
 
                   return (
                     <div key={pokemon.id} className={`relative overflow-hidden rounded-2xl p-3.5 border transition-colors duration-200 ${cardBorderClass}`}>
@@ -666,27 +679,29 @@ export default function App() {
                       )}
 
                       <div className="relative z-10 flex items-center gap-2.5">
-                        <div className={`relative w-16 h-16 rounded-xl bg-[#0f0f12] border flex items-center justify-center shrink-0 transition-colors duration-300 ${shouldHighlightMega ? 'border-white' : isShiny && pokemon.shiny_released === 1 ? 'border-amber-400/70' : isHundo ? 'border-[#dc2626]' : 'border-zinc-800'}`}>
+                        <div className={`relative w-16 h-16 rounded-xl bg-[#0f0f12] border flex items-center justify-center shrink-0 transition-colors duration-300 ${shouldHighlightMega ? 'border-white' : isShiny && (pokemon.shiny_released === 1 || !isReleased) ? 'border-amber-400/70' : isHundo ? 'border-[#dc2626]' : 'border-zinc-800'}`}>
                           <PokemonCrossfadeSprite
                             dexNumber={pokemon.dexNumber}
                             pokeapiId={pokemon.pokeapiId}
                             name={pokemon.name}
-                            isShiny={isShiny && pokemon.shiny_released === 1}
-                            isMuted={isReleased && megaLevel === 0 && !isHundo && !(isShiny && pokemon.shiny_released === 1)}
+                            isShiny={isShiny && (pokemon.shiny_released === 1 || !isReleased)}
+                            isMuted={!isHundo && !isShiny && (isReleased ? megaLevel === 0 : true)}
                           />
                           {pokemon.category !== 'Standard' && (
                             <div className="absolute -top-1.5 -right-1.5"><CategoryCornerIcon category={pokemon.category} /></div>
                           )}
-                          {isShiny && pokemon.shiny_released === 1 && (
+                          {isShiny && (pokemon.shiny_released === 1 || !isReleased) && (
                             <span className="absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-gradient-to-br from-amber-300 to-yellow-600 text-[#0f0f12] flex items-center justify-center shadow">
                               <Sparkles className="w-2.5 h-2.5 fill-[#0f0f12]" />
                             </span>
                           )}
                         </div>
 
-                        <div className="flex-1 min-w-0">
-                          <div className="flex items-center gap-2 truncate">
-                            <h2 className="text-sm font-bold text-white truncate">{pokemon.name}</h2>
+                        <div className="flex-1 min-w-0 overflow-hidden">
+                          <div className="flex items-center gap-2">
+                            <div className="truncate overflow-hidden relative">
+                              <h2 className="text-sm font-bold text-white truncate hover:overflow-visible">{pokemon.name}</h2>
+                            </div>
                             <span className="text-[10px] font-mono font-bold bg-[#222227] text-zinc-400 px-1.5 py-0.5 rounded border border-zinc-700/80 shrink-0">
                               #{String(pokemon.dexNumber).padStart(3, '0')}
                             </span>
@@ -719,7 +734,7 @@ export default function App() {
                             <span className="text-[10px] font-black tracking-tight leading-none">HUNDO</span>
                           </button>
 
-                          {pokemon.shiny_released === 1 && (
+                          {(pokemon.shiny_released === 1 || !isReleased) && (
                             <button
                               type="button"
                               onClick={() => toggleShiny(pokemon)}
@@ -732,8 +747,8 @@ export default function App() {
                         </div>
                       </div>
 
-                      {/* Poziomy Mega widoczne TYLKO dla wydanych form */}
-                      {isReleased && (
+                      {/* Poziomy Mega dla wydanych lub komunikat Wkrótce dla niewydanych */}
+                      {isReleased ? (
                         <div className="relative z-10 mt-3 pt-2.5 border-t border-zinc-800/90">
                           <div className={`grid gap-1.5 ${pokemon.super_mega === 1 ? 'grid-cols-5' : 'grid-cols-4'}`}>
                             {(pokemon.super_mega === 1 ? [0, 1, 2, 3, 4] : [0, 1, 2, 3]).map((lvl) => {
@@ -757,6 +772,12 @@ export default function App() {
                             {MEGA_LEVEL_BONUS[megaLevel]}
                           </p>
                         </div>
+                      ) : (
+                        <div className="relative z-10 mt-3 pt-2.5 border-t border-zinc-800/90 text-center">
+                          <span className="text-[11px] font-semibold text-indigo-300 tracking-wide uppercase">
+                            Wkrótce w Pokémon GO
+                          </span>
+                        </div>
                       )}
                     </div>
                   );
@@ -765,7 +786,7 @@ export default function App() {
             </div>
 
             {/* EKRAN 2: PODSUMOWANIE */}
-            <div className="w-1/2 h-full overflow-y-auto overscroll-y-contain px-4 pt-4 pb-24 space-y-4">
+            <div className="w-1/2 h-full overflow-y-auto overscroll-y-contain px-4 pt-4 pb-20 space-y-4">
               
               {/* Przełącznik trybu statystyk: Wydane / Niewydane */}
               <div className="bg-[#18181b] p-1.5 rounded-2xl border border-zinc-800 grid grid-cols-2 gap-1">
@@ -919,9 +940,9 @@ export default function App() {
           </div>
         </div>
 
-        {/* DYNAMICZNY PRZYCISK FAB (Płynnie rozsuwający się na dole listy) */}
+        {/* DYNAMICZNY PRZYCISK FAB */}
         {activeTab === 0 && (
-          <div className="absolute bottom-20 right-4 left-4 z-30 flex justify-end pointer-events-none">
+          <div className="absolute bottom-16 right-4 left-4 z-30 flex justify-end pointer-events-none">
             <button
               type="button"
               onClick={openFilterSheet}
@@ -950,7 +971,7 @@ export default function App() {
         )}
 
         {/* DOLNY PASEK NAWIGACJI */}
-        <nav className="shrink-0 z-40 bg-[#141418] border-t border-zinc-800 px-3 pt-2.5 pb-6">
+        <nav className="shrink-0 z-40 bg-[#141418] border-t border-zinc-800 px-3 pt-2 pb-5">
           <div className="grid grid-cols-2 gap-2 max-w-md mx-auto">
             <button
               type="button"

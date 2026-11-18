@@ -652,7 +652,7 @@ export default function App() {
             <div
               ref={listContainerRef}
               onScroll={handleDexScroll}
-              className="w-1/2 h-full overflow-y-auto overscroll-y-contain px-4 pt-3 pb-[75px] space-y-3"
+              className="w-1/2 h-full overflow-y-auto overscroll-y-contain px-4 pt-3 pb-[74px] space-y-3"
             >
               {activeFiltersCount > 0 && (
                 <div className="flex items-center gap-1.5 flex-wrap pb-1">
@@ -822,7 +822,7 @@ export default function App() {
             </div>
 
             {/* EKRAN 2: PODSUMOWANIE */}
-            <div className="w-1/2 h-full overflow-y-auto overscroll-y-contain px-4 pt-4 pb-12 space-y-3">
+            <div className="w-1/2 h-full overflow-y-auto overscroll-y-contain px-4 pt-4 pb-4 space-y-3">
               
               {/* Przełącznik trybu statystyk: Wydane / Niewydane */}
               <div className="bg-[#18181b] p-1.5 rounded-2xl border border-zinc-800 grid grid-cols-2 gap-1">

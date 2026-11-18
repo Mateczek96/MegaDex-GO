@@ -660,7 +660,6 @@ export default function App() {
 
                   let cardBorderClass = 'bg-[#18181b] border-zinc-800';
                   if (!isReleased) {
-                    // Niewydane pokemony w kolorystyce wydanych, ale z linią przerywaną
                     if (isHundo) cardBorderClass = 'bg-[#1b1719] border-[#dc2626] border-dashed shadow-md shadow-red-950/20';
                     else if (isShiny) cardBorderClass = 'bg-[#1a1916] border-amber-500/60 border-dashed';
                     else cardBorderClass = 'bg-[#18181b] border-zinc-700 border-dashed opacity-95';
@@ -700,7 +699,7 @@ export default function App() {
                         <div className="flex-1 min-w-0 overflow-hidden">
                           <div className="flex items-center gap-2">
                             <div className="truncate overflow-hidden relative">
-                              <h2 className="text-sm font-bold text-white truncate hover:overflow-visible">{pokemon.name}</h2>
+                              <h2 className="text-sm font-bold text-white truncate">{pokemon.name}</h2>
                             </div>
                             <span className="text-[10px] font-mono font-bold bg-[#222227] text-zinc-400 px-1.5 py-0.5 rounded border border-zinc-700/80 shrink-0">
                               #{String(pokemon.dexNumber).padStart(3, '0')}
@@ -947,7 +946,7 @@ export default function App() {
               type="button"
               onClick={openFilterSheet}
               aria-label="Filtry i Sortowanie"
-              className={`pointer-events-auto relative bg-[#dc2626] hover:bg-red-500 text-white flex items-center justify-center shadow-2xl shadow-black border-2 border-white active:scale-95 transition-all duration-300 ease-out overflow-hidden ${
+              className={`pointer-events-auto relative bg-[#dc2626] hover:bg-red-500 text-white flex items-center justify-center shadow-2xl shadow-black border-2 border-white active:scale-95 transition-all duration-300 ease-out overflow-visible ${
                 isScrolledToBottom
                   ? 'w-full max-w-sm mx-auto h-14 rounded-2xl px-5 gap-3 shadow-[0_10px_25px_rgba(220,38,38,0.5)]'
                   : 'w-14 h-14 rounded-full'
@@ -961,7 +960,7 @@ export default function App() {
 
               {activeFiltersCount > 0 && (
                 <span className={`rounded-full bg-white text-[#0f0f12] font-black flex items-center justify-center border-2 border-[#0f0f12] shrink-0 transition-all duration-300 ${
-                  isScrolledToBottom ? 'w-6 h-6 text-xs ml-auto' : 'absolute -top-1 -right-1 w-5 h-5 text-[11px]'
+                  isScrolledToBottom ? 'w-6 h-6 text-xs ml-auto' : 'absolute -top-2 -right-2 w-5 h-5 text-[11px] shadow-md z-20'
                 }`}>
                   {activeFiltersCount}
                 </span>

@@ -1078,7 +1078,7 @@ const activeFiltersCount = useMemo(() => {
         {isSheetMounted && (
           <div onClick={(e) => { if (e.target === e.currentTarget) closeFilterSheet(); }} className={`fixed inset-0 z-50 flex items-end justify-center transition-colors duration-500 ${isSheetVisible ? 'bg-black/80' : 'bg-black/0'}`}>
             <div
-              style={{ transform: isSheetVisible ? `translate3d(0, ${sheetDragY}px, 0)` : 'translate3d(0, 100%, 0)', transition: isDraggingSheet ? 'none' : 'transform 0.3s cubic-bezier(0.22, 1, 0.36, 1)' }}
+              style={{ transform: isSheetVisible ? `translate3d(0, ${sheetDragY}px, 0)` : 'translate3d(0, 100%, 0)', transition: isDraggingSheet ? 'none' : 'transform 0.5s cubic-bezier(0.22, 1, 0.36, 1)' }}
               className="w-full max-w-md bg-[#18181b] border-t-2 border-[#dc2626] rounded-t-3xl shadow-2xl flex flex-col max-h-[88vh]"
             >
               <div

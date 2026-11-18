@@ -897,7 +897,7 @@ const activeFiltersCount = useMemo(() => {
               </div>
 
               {/* Rozkład poziomów Mega */}
-              <div className={`grid transition-all duration-300 ease-out overflow-hidden ${summaryMode === 'released' ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'}`}>
+              <div className={`grid transition-all duration-500 ease-out overflow-hidden ${summaryMode === 'released' ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0 -mt-3'}`}>
                 <div className="overflow-hidden">
                   <section className="rounded-2xl p-4 bg-[#18181b] border border-zinc-800">
                     <h2 className="text-sm font-bold text-white mb-3">Poziomy Mega ewolucji</h2>

@@ -608,7 +608,7 @@ const activeFiltersCount = useMemo(() => {
                   type="button"
                   onClick={toggleSearch}
                   aria-label="Szukaj"
-                  className={`w-10 h-10 rounded-xl border flex items-center justify-center transition-all duration-500 active:scale-95 ${
+                  className={`w-10 h-10 rounded-xl border flex items-center justify-center transition-all duration-300 active:scale-95 ${
                     isSearchOpen || searchQuery
                       ? 'bg-[#dc2626] border-red-400 text-white shadow-md shadow-red-950/50'
                       : 'bg-[#0f0f12] border-zinc-800 text-zinc-300 hover:border-zinc-700 hover:text-white'

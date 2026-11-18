@@ -85,7 +85,7 @@ export const MEGA_POKEMON_DB = [
   { id: 'mega_zygarde', dexNumber: 718, pokeapiId: 10301, name: 'Mega Zygarde', types: ['Dragon', 'Ground'], category: 'Legendary', released: 0, shiny_released: 0, super_mega: 1 },
   { id: 'mega_diancie', dexNumber: 719, pokeapiId: 10075, name: 'Mega Diancie', types: ['Rock', 'Fairy'], category: 'Mythical', released: 1, shiny_released: 1, super_mega: 0 },
   { id: 'mega_crabominable', dexNumber: 740, pokeapiId: 10315, name: 'Mega Crabominable', types: ['Fighting', 'Ice'], category: 'Standard', released: 0, shiny_released: 1, super_mega: 0 },
-  { id: 'mega_golisopod', dexNumber: 768, pokeapiId: 10316, name: 'Mega Golisopod', types: ['Bug', 'Steel'], category: 'Standard', released: 0, shiny_released: 0, super_mega: 0 },
+  { id: 'mega_golisopod', dexNumber: 768, pokeapiId: 10316, name: 'Mega Golisopod', types: ['Bug', 'Steel'], category: 'Standard', released: 0, shiny_released: 1, super_mega: 0 },
   { id: 'mega_drampa', dexNumber: 780, pokeapiId: 10302, name: 'Mega Drampa', types: ['Normal', 'Dragon'], category: 'Standard', released: 0, shiny_released: 1, super_mega: 0 },
   { id: 'mega_magearna', dexNumber: 801, pokeapiId: 10317, name: 'Mega Magearna', types: ['Steel', 'Fairy'], category: 'Mythical', released: 0, shiny_released: 0, super_mega: 0 },
   { id: 'mega_zeraora', dexNumber: 807, pokeapiId: 10319, name: 'Mega Zeraora', types: ['Electric'], category: 'Mythical', released: 0, shiny_released: 0, super_mega: 0 },

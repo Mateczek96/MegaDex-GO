@@ -107,7 +107,7 @@ function PokemonCrossfadeSprite({ dexNumber, pokeapiId, name, isShiny, isMuted }
             if (normalStage < normalUrls.length - 1) setNormalStage((s) => s + 1);
             else setNormalFailedAll(true);
           }}
-          className={`absolute inset-0 w-14 h-14 object-contain transition-all duration-300 ease-out ${
+          className={`absolute inset-0 w-14 h-14 object-contain transition-all duration-500 ease-out ${
             isShiny ? 'opacity-0 scale-90 pointer-events-none' : 'opacity-100 scale-100'
           } ${isMuted && !isShiny ? 'grayscale opacity-60' : ''}`}
         />
@@ -128,7 +128,7 @@ function PokemonCrossfadeSprite({ dexNumber, pokeapiId, name, isShiny, isMuted }
             if (shinyStage < shinyUrls.length - 1) setShinyStage((s) => s + 1);
             else setShinyFailedAll(true);
           }}
-          className={`absolute inset-0 w-14 h-14 object-contain transition-all duration-300 ease-out ${
+          className={`absolute inset-0 w-14 h-14 object-contain transition-all duration-500 ease-out ${
             isShiny
               ? 'opacity-100 scale-105 drop-shadow-[0_0_8px_rgba(234,179,8,0.45)]'
               : 'opacity-0 scale-90 pointer-events-none'
@@ -608,7 +608,7 @@ const activeFiltersCount = useMemo(() => {
                   type="button"
                   onClick={toggleSearch}
                   aria-label="Szukaj"
-                  className={`w-10 h-10 rounded-xl border flex items-center justify-center transition-all duration-200 active:scale-95 ${
+                  className={`w-10 h-10 rounded-xl border flex items-center justify-center transition-all duration-500 active:scale-95 ${
                     isSearchOpen || searchQuery
                       ? 'bg-[#dc2626] border-red-400 text-white shadow-md shadow-red-950/50'
                       : 'bg-[#0f0f12] border-zinc-800 text-zinc-300 hover:border-zinc-700 hover:text-white'
@@ -620,7 +620,7 @@ const activeFiltersCount = useMemo(() => {
             </div>
 
             {activeTab === 0 && (
-              <div className={`grid transition-all duration-250 ease-out ${isSearchOpen ? 'grid-rows-[1fr] opacity-100 mt-2.5' : 'grid-rows-[0fr] opacity-0 mt-0'}`}>
+              <div className={`grid transition-all duration-500 ease-out ${isSearchOpen ? 'grid-rows-[1fr] opacity-100 mt-2.5' : 'grid-rows-[0fr] opacity-0 mt-0'}`}>
                 <div className="overflow-hidden">
                   <div className="relative">
                     <Search className="w-4 h-4 text-zinc-500 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
@@ -780,7 +780,7 @@ const activeFiltersCount = useMemo(() => {
                           <button
                             type="button"
                             onClick={() => toggleHundo(pokemon)}
-                            className={`flex flex-col items-center justify-center w-13 h-14 px-2 rounded-xl border transition-all duration-150 active:scale-95 ${isHundo ? 'bg-[#dc2626] text-white border-red-300 shadow-md shadow-red-950/50 font-black' : 'bg-[#0f0f12] text-zinc-500 border-zinc-800 hover:border-zinc-700 hover:text-zinc-300'}`}
+                            className={`flex flex-col items-center justify-center w-13 h-14 px-2 rounded-xl border transition-all duration-300 active:scale-95 ${isHundo ? 'bg-[#dc2626] text-white border-red-300 shadow-md shadow-red-950/50 font-black' : 'bg-[#0f0f12] text-zinc-500 border-zinc-800 hover:border-zinc-700 hover:text-zinc-300'}`}
                           >
                             <Flame className={`w-4 h-4 mb-0.5 ${isHundo ? 'fill-white text-white' : 'text-zinc-600'}`} />
                             <span className="text-[10px] font-black tracking-tight leading-none">HUNDO</span>
@@ -790,7 +790,7 @@ const activeFiltersCount = useMemo(() => {
                             <button
                               type="button"
                               onClick={() => toggleShiny(pokemon)}
-                              className={`flex flex-col items-center justify-center w-13 h-14 px-2 rounded-xl border transition-all duration-200 active:scale-95 ${isShiny ? 'bg-gradient-to-br from-amber-300 via-yellow-400 to-amber-500 text-zinc-950 border-amber-200 shadow-md shadow-amber-950/50 font-black' : 'bg-[#0f0f12] text-zinc-500 border-zinc-800 hover:border-amber-500/40 hover:text-amber-300/80'}`}
+                              className={`flex flex-col items-center justify-center w-13 h-14 px-2 rounded-xl border transition-all duration-300 active:scale-95 ${isShiny ? 'bg-gradient-to-br from-amber-300 via-yellow-400 to-amber-500 text-zinc-950 border-amber-200 shadow-md shadow-amber-950/50 font-black' : 'bg-[#0f0f12] text-zinc-500 border-zinc-800 hover:border-amber-500/40 hover:text-amber-300/80'}`}
                             >
                               <Star className={`w-4 h-4 mb-0.5 ${isShiny ? 'fill-zinc-950 text-zinc-950' : 'text-zinc-600'}`} />
                               <span className="text-[10px] font-black tracking-tight leading-none">SHINY</span>
@@ -814,7 +814,7 @@ const activeFiltersCount = useMemo(() => {
                                 else if (lvl === 4) btnStyle = 'bg-gradient-to-r from-red-600 via-[#dc2626] to-amber-500 text-white border-amber-300 font-black shadow-sm';
                               }
                               return (
-                                <button key={lvl} type="button" onClick={() => setMegaLevel(pokemon, lvl)} className={`py-1.5 rounded-xl text-xs font-bold border transition-all duration-150 active:scale-95 ${btnStyle}`}>
+                                <button key={lvl} type="button" onClick={() => setMegaLevel(pokemon, lvl)} className={`py-1.5 rounded-xl text-xs font-bold border transition-all duration-300 active:scale-95 ${btnStyle}`}>
                                   {lvl === 0 ? 'Brak' : `Lvl ${lvl}`}
                                 </button>
                               );
@@ -1004,13 +1004,13 @@ const activeFiltersCount = useMemo(() => {
               type="button"
               onClick={openFilterSheet}
               aria-label="Filtry i Sortowanie"
-              className={`pointer-events-auto relative bg-[#dc2626] hover:bg-red-500 text-white flex items-center justify-center shadow-2xl shadow-black border-2 border-white active:scale-95 transition-all duration-300 ease-out overflow-visible ${
+              className={`pointer-events-auto relative bg-[#dc2626] hover:bg-red-500 text-white flex items-center justify-center shadow-2xl shadow-black border-2 border-white active:scale-95 transition-all duration-500 ease-out overflow-visible ${
                 isScrolledToBottom
                   ? 'w-full max-w-sm mx-auto h-14 rounded-2xl px-5 gap-3 shadow-[0_10px_25px_rgba(220,38,38,0.5)]'
                   : 'w-14 h-14 rounded-full'
               }`}
             >
-              <SlidersHorizontal className={`shrink-0 transition-transform duration-300 ${isScrolledToBottom ? 'w-5 h-5 stroke-[2.5]' : 'w-6 h-6 stroke-[2.5]'}`} />
+              <SlidersHorizontal className={`shrink-0 transition-transform duration-500 ${isScrolledToBottom ? 'w-5 h-5 stroke-[2.5]' : 'w-6 h-6 stroke-[2.5]'}`} />
               
               <span className={`font-black text-sm tracking-tight uppercase whitespace-nowrap transition-all duration-300 ${isScrolledToBottom ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-4 absolute pointer-events-none'}`}>
                 Filtrowanie i Sortowanie

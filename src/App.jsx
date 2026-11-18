@@ -307,8 +307,25 @@ export default function App() {
 
   const [showHundo, setShowHundo] = useState(true);
   const [showShiny, setShowShiny] = useState(true);
-  const [showReleased, setShowReleased] = useState(true);
-  const [showUnreleased, setShowUnreleased] = useState(false);
+  const [showReleased, setShowReleased] = useState(() => {
+    try {
+      const saved = localStorage.getItem('megadex_go_show_released');
+      return saved !== null ? JSON.parse(saved) : true;
+    } catch { return true; }
+  });
+
+  const [showUnreleased, setShowUnreleased] = useState(() => {
+    try {
+      const saved = localStorage.getItem('megadex_go_show_unreleased');
+      return saved !== null ? JSON.parse(saved) : false;
+    } catch { return false; }
+  });
+  useEffect(() => {
+    try {
+      localStorage.setItem('megadex_go_show_released', JSON.stringify(showReleased));
+      localStorage.setItem('megadex_go_show_unreleased', JSON.stringify(showUnreleased));
+    } catch (e) {}
+  }, [showReleased, showUnreleased]);
   const [summaryMode, setSummaryMode] = useState('released');
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [selectedTypes, setSelectedTypes] = useState([]);

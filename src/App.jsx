@@ -999,7 +999,7 @@ const activeFiltersCount = useMemo(() => {
 
         {/* DYNAMICZNY PRZYCISK FAB */}
         {activeTab === 0 && (
-          <div className="absolute bottom-[100px] right-4 left-4 z-30 flex justify-end pointer-events-none">
+          <div className="absolute bottom-[96px] right-4 left-4 z-30 flex justify-end pointer-events-none">
             <button
               type="button"
               onClick={openFilterSheet}
@@ -1010,7 +1010,7 @@ const activeFiltersCount = useMemo(() => {
                   : 'w-14 h-14 rounded-full'
               }`}
             >
-              <SlidersHorizontal className={`shrink-0 transition-transform duration-500 ${isScrolledToBottom ? 'w-5 h-5 stroke-[2.5]' : 'w-6 h-6 stroke-[2.5]'}`} />
+              <SlidersHorizontal className={`shrink-0 transition-transform duration-300 ${isScrolledToBottom ? 'w-5 h-5 stroke-[2.5]' : 'w-6 h-6 stroke-[2.5]'}`} />
               
               <span className={`font-black text-sm tracking-tight uppercase whitespace-nowrap transition-all duration-300 ${isScrolledToBottom ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-4 absolute pointer-events-none'}`}>
                 Filtrowanie i Sortowanie

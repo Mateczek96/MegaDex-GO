@@ -1028,35 +1028,36 @@ const activeFiltersCount = useMemo(() => {
         )}
 
         {/* DOLNY PASEK NAWIGACJI */}
-        <nav className="shrink-0 z-40 bg-[#141418] border-t border-zinc-800 px-3 pt-2 pb-5">
-          <div className="grid grid-cols-2 gap-2 max-w-md mx-auto">
+        <nav className="shrink-0 z-40 bg-[#141418] border-t border-zinc-800 px-3 pt-3 pb-6">
+          <div className="grid grid-cols-2 gap-2.5 max-w-md mx-auto">
             <button
               type="button"
               onClick={() => setActiveTab(0)}
-              className={`flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl text-xs font-extrabold transition-all duration-500 active:scale-95 ${
+              className={`flex items-center justify-center gap-2.5 py-3.5 px-4 rounded-2xl text-sm font-black transition-all duration-300 active:scale-95 ${
                 activeTab === 0
-                  ? 'bg-[#dc2626] text-white border border-red-400 shadow-md shadow-red-950/40'
+                  ? 'bg-[#dc2626] text-white border border-red-400 shadow-lg shadow-red-950/50'
                   : 'bg-[#0f0f12] text-zinc-400 hover:text-zinc-200 border border-zinc-800'
               }`}
             >
-              <AppHeaderIcon className="w-4 h-4 rounded" />
+              <AppHeaderIcon className="w-5 h-5 rounded-lg" />
               <span>MegaDex</span>
             </button>
 
             <button
               type="button"
               onClick={() => setActiveTab(1)}
-              className={`flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl text-xs font-extrabold transition-all duration-500 active:scale-95 ${
+              className={`flex items-center justify-center gap-2.5 py-3.5 px-4 rounded-2xl text-sm font-black transition-all duration-300 active:scale-95 ${
                 activeTab === 1
-                  ? 'bg-white text-[#0f0f12] border border-white shadow-md shadow-black/40'
+                  ? 'bg-white text-[#0f0f12] border border-white shadow-lg shadow-black/50'
                   : 'bg-[#0f0f12] text-zinc-400 hover:text-zinc-200 border border-zinc-800'
               }`}
             >
-              <BarChart3 className={`w-4 h-4 ${activeTab === 1 ? 'text-[#dc2626]' : 'text-zinc-500'}`} />
+              <BarChart3 className={`w-5 h-5 ${activeTab === 1 ? 'text-[#dc2626]' : 'text-zinc-500'}`} />
               <span>Podsumowanie</span>
             </button>
           </div>
         </nav>
+
 
         {/* WYSUWANY PANEL FILTRÓW I SORTOWANIA */}
         {isSheetMounted && (

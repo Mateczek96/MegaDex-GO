@@ -608,7 +608,7 @@ export default function App() {
             <div
               ref={listContainerRef}
               onScroll={handleDexScroll}
-              className="w-1/2 h-full overflow-y-auto overscroll-y-contain px-4 pt-3 pb-20 space-y-3"
+              className="w-1/2 h-full overflow-y-auto overscroll-y-contain px-4 pt-3 pb-24 space-y-3"
             >
               {activeFiltersCount > 0 && (
                 <div className="flex items-center gap-1.5 flex-wrap pb-1">
@@ -785,7 +785,7 @@ export default function App() {
             </div>
 
             {/* EKRAN 2: PODSUMOWANIE */}
-            <div className="w-1/2 h-full overflow-y-auto overscroll-y-contain px-4 pt-4 pb-20 space-y-4">
+            <div className="w-1/2 h-full overflow-y-auto overscroll-y-contain px-4 pt-4 pb-16 space-y-3">
               
               {/* Przełącznik trybu statystyk: Wydane / Niewydane */}
               <div className="bg-[#18181b] p-1.5 rounded-2xl border border-zinc-800 grid grid-cols-2 gap-1">
@@ -939,9 +939,9 @@ export default function App() {
           </div>
         </div>
 
-        {/* DYNAMICZNY PRZYCISK FAB */}
+        {/* DYNAMICZNY PRZYCISK FAB (podniesiony wyżej, ponad dolny pasek) */}
         {activeTab === 0 && (
-          <div className="absolute bottom-16 right-4 left-4 z-30 flex justify-end pointer-events-none">
+          <div className="absolute bottom-20 right-4 left-4 z-30 flex justify-end pointer-events-none">
             <button
               type="button"
               onClick={openFilterSheet}

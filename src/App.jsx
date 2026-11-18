@@ -620,7 +620,7 @@ const activeFiltersCount = useMemo(() => {
             </div>
 
             {activeTab === 0 && (
-              <div className={`grid transition-all duration-500 ease-out ${isSearchOpen ? 'grid-rows-[1fr] opacity-100 mt-2.5' : 'grid-rows-[0fr] opacity-0 mt-0'}`}>
+              <div className={`grid transition-all duration-300 ease-out ${isSearchOpen ? 'grid-rows-[1fr] opacity-100 mt-2.5' : 'grid-rows-[0fr] opacity-0 mt-0'}`}>
                 <div className="overflow-hidden">
                   <div className="relative">
                     <Search className="w-4 h-4 text-zinc-500 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />

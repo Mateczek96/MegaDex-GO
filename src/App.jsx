@@ -358,7 +358,7 @@ export default function App() {
 
   const closeFilterSheet = () => {
     setIsSheetVisible(false); setIsDraggingSheet(false);
-    setTimeout(() => { setIsSheetMounted(false); setSheetDragY(0); }, 300);
+    setTimeout(() => { setIsSheetMounted(false); setSheetDragY(0); }, 500);
   };
 
   const handleSheetDragStart = (clientY) => { sheetDragStartRef.current = clientY; setIsDraggingSheet(true); };

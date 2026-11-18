@@ -212,6 +212,39 @@ function SplashScreen({ isFadingOut }) {
   );
 }
 
+function PokemonNameContainer({ name }) {
+  const containerRef = useRef(null);
+  const textRef = useRef(null);
+  const [isOverflowing, setIsOverflowing] = useState(false);
+
+  useEffect(() => {
+    const checkOverflow = () => {
+      if (containerRef.current && textRef.current) {
+        const overflowing = textRef.current.scrollWidth > containerRef.current.clientWidth;
+        setIsOverflowing(overflowing);
+        if (overflowing) {
+          const diff = textRef.current.scrollWidth - containerRef.current.clientWidth;
+          textRef.current.style.setProperty('--marquee-distance', `-${diff + 6}px`);
+        }
+      }
+    };
+    checkOverflow();
+    window.addEventListener('resize', checkOverflow);
+    return () => window.removeEventListener('resize', checkOverflow);
+  }, [name]);
+
+  return (
+    <div ref={containerRef} className="truncate overflow-hidden relative max-w-full">
+      <h2
+        ref={textRef}
+        className={`text-sm font-bold text-white whitespace-nowrap ${isOverflowing ? 'marquee-text' : 'truncate'}`}
+      >
+        {name}
+      </h2>
+    </div>
+  );
+}
+
 export default function App() {
   const [showSplash, setShowSplash] = useState(true);
   const [fadeSplash, setFadeSplash] = useState(false);
@@ -281,6 +314,14 @@ export default function App() {
   const [selectedTypes, setSelectedTypes] = useState([]);
   const [levelFilter, setLevelFilter] = useState('ALL');
   const [sortBy, setSortBy] = useState('DEX_ASC');
+
+  // Funkcja resetująca pozycję listy do góry
+  const resetScrollToTop = () => {
+    if (listContainerRef.current) {
+      listContainerRef.current.scrollTop = 0;
+      setIsScrolledToBottom(false);
+    }
+  };
 
   const [toast, setToast] = useState(null);
   const showToast = (msg) => {
@@ -355,6 +396,7 @@ export default function App() {
 
   const toggleCategoryFilter = (catKey) => {
     setSelectedCategories((prev) => prev.includes(catKey) ? prev.filter((c) => c !== catKey) : [...prev, catKey]);
+    resetScrollToTop();
   };
 
   const toggleTypeFilter = (typeKey) => {
@@ -363,6 +405,7 @@ export default function App() {
       if (prev.length >= 2) { showToast('Możesz wybrać maksymalnie 2 typy naraz'); return prev; }
       return [...prev, typeKey];
     });
+    resetScrollToTop();
   };
 
   const getProgress = (id) => {
@@ -453,6 +496,7 @@ export default function App() {
 
   const resetAllFilters = () => {
     setShowHundo(true); setShowShiny(true); setShowReleased(true); setShowUnreleased(false); setSelectedCategories([]); setSelectedTypes([]); setLevelFilter('ALL'); setSortBy('DEX_ASC');
+    resetScrollToTop();
   };
 
   const filteredPokemon = useMemo(() => {
@@ -568,12 +612,12 @@ export default function App() {
                       ref={searchInputRef}
                       type="text"
                       value={searchQuery}
-                      onChange={(e) => setSearchQuery(e.target.value)}
+                      onChange={(e) => { setSearchQuery(e.target.value); resetScrollToTop(); }}
                       placeholder="Szukaj Mega ewolucji (nazwa lub #Dex)..."
                       className="w-full bg-[#0f0f12] text-sm text-white placeholder-zinc-500 pl-10 pr-9 py-2.5 rounded-xl border border-zinc-700 focus:outline-none focus:border-[#dc2626] transition-colors"
                     />
                     {searchQuery && (
-                      <button type="button" onClick={() => setSearchQuery('')} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-white p-1">
+                      <button type="button" onClick={() => { setSearchQuery(''); resetScrollToTop(); }} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-white p-1">
                         <X className="w-4 h-4" />
                       </button>
                     )}
@@ -608,17 +652,17 @@ export default function App() {
             <div
               ref={listContainerRef}
               onScroll={handleDexScroll}
-              className="w-1/2 h-full overflow-y-auto overscroll-y-contain px-4 pt-3 pb-24 space-y-3"
+              className="w-1/2 h-full overflow-y-auto overscroll-y-contain px-4 pt-3 pb-[88px] space-y-3"
             >
               {activeFiltersCount > 0 && (
                 <div className="flex items-center gap-1.5 flex-wrap pb-1">
                   {!showHundo && (
-                    <button onClick={() => setShowHundo(true)} className="inline-flex items-center gap-1 text-[11px] font-bold px-2.5 py-1 rounded-full bg-[#dc2626]/20 text-red-200 border border-[#dc2626]/50">
+                    <button onClick={() => { setShowHundo(true); resetScrollToTop(); }} className="inline-flex items-center gap-1 text-[11px] font-bold px-2.5 py-1 rounded-full bg-[#dc2626]/20 text-red-200 border border-[#dc2626]/50">
                       Ukryto Hundo <X className="w-3 h-3" />
                     </button>
                   )}
                   {!showShiny && (
-                    <button onClick={() => setShowShiny(true)} className="inline-flex items-center gap-1 text-[11px] font-bold px-2.5 py-1 rounded-full bg-amber-500/20 text-amber-200 border border-amber-500/50">
+                    <button onClick={() => { setShowShiny(true); resetScrollToTop(); }} className="inline-flex items-center gap-1 text-[11px] font-bold px-2.5 py-1 rounded-full bg-amber-500/20 text-amber-200 border border-amber-500/50">
                       Ukryto Shiny <X className="w-3 h-3" />
                     </button>
                   )}
@@ -698,17 +742,10 @@ export default function App() {
 
                         <div className="flex-1 min-w-0 overflow-hidden">
                           <div className="flex items-center gap-2">
-                            <div className="truncate overflow-hidden relative">
-                              <h2 className="text-sm font-bold text-white truncate">{pokemon.name}</h2>
-                            </div>
+                            <PokemonNameContainer name={pokemon.name} />
                             <span className="text-[10px] font-mono font-bold bg-[#222227] text-zinc-400 px-1.5 py-0.5 rounded border border-zinc-700/80 shrink-0">
                               #{String(pokemon.dexNumber).padStart(3, '0')}
                             </span>
-                            {!isReleased && (
-                              <span className="text-[9px] font-black uppercase tracking-wider bg-indigo-950 text-indigo-300 px-1.5 py-0.5 rounded border border-indigo-800 shrink-0">
-                                Wkrótce
-                              </span>
-                            )}
                           </div>
 
                           <div className="flex items-center gap-1 mt-1.5 flex-wrap">
@@ -785,7 +822,7 @@ export default function App() {
             </div>
 
             {/* EKRAN 2: PODSUMOWANIE */}
-            <div className="w-1/2 h-full overflow-y-auto overscroll-y-contain px-4 pt-4 pb-16 space-y-3">
+            <div className="w-1/2 h-full overflow-y-auto overscroll-y-contain px-4 pt-4 pb-12 space-y-3">
               
               {/* Przełącznik trybu statystyk: Wydane / Niewydane */}
               <div className="bg-[#18181b] p-1.5 rounded-2xl border border-zinc-800 grid grid-cols-2 gap-1">
@@ -939,9 +976,9 @@ export default function App() {
           </div>
         </div>
 
-        {/* DYNAMICZNY PRZYCISK FAB (podniesiony wyżej, ponad dolny pasek) */}
+        {/* DYNAMICZNY PRZYCISK FAB */}
         {activeTab === 0 && (
-          <div className="absolute bottom-20 right-4 left-4 z-30 flex justify-end pointer-events-none">
+          <div className="absolute bottom-[76px] right-4 left-4 z-30 flex justify-end pointer-events-none">
             <button
               type="button"
               onClick={openFilterSheet}
@@ -1041,11 +1078,11 @@ export default function App() {
                 <div>
                   <label className="text-xs font-bold uppercase tracking-wider text-zinc-400 block mb-2">Status w Pokémon GO</label>
                   <div className="grid grid-cols-2 gap-2">
-                    <button type="button" onClick={() => setShowReleased((prev) => !prev)} className={`py-2.5 px-3 rounded-xl text-xs font-bold border transition-all flex items-center justify-between ${showReleased ? 'bg-emerald-600 border-emerald-400 text-white' : 'bg-[#0f0f12] border-zinc-800 text-zinc-500'}`}>
+                    <button type="button" onClick={() => { setShowReleased((prev) => !prev); resetScrollToTop(); }} className={`py-2.5 px-3 rounded-xl text-xs font-bold border transition-all flex items-center justify-between ${showReleased ? 'bg-emerald-600 border-emerald-400 text-white' : 'bg-[#0f0f12] border-zinc-800 text-zinc-500'}`}>
                       <span>Wydane</span>
                       <span className={`w-4 h-4 rounded flex items-center justify-center border ${showReleased ? 'bg-white border-white text-emerald-600' : 'bg-zinc-900 border-zinc-700 text-transparent'}`}><Check className="w-3 h-3 stroke-[3]" /></span>
                     </button>
-                    <button type="button" onClick={() => setShowUnreleased((prev) => !prev)} className={`py-2.5 px-3 rounded-xl text-xs font-bold border transition-all flex items-center justify-between ${showUnreleased ? 'bg-indigo-600 border-indigo-400 text-white' : 'bg-[#0f0f12] border-zinc-800 text-zinc-500'}`}>
+                    <button type="button" onClick={() => { setShowUnreleased((prev) => !prev); resetScrollToTop(); }} className={`py-2.5 px-3 rounded-xl text-xs font-bold border transition-all flex items-center justify-between ${showUnreleased ? 'bg-indigo-600 border-indigo-400 text-white' : 'bg-[#0f0f12] border-zinc-800 text-zinc-500'}`}>
                       <span>Niewydane</span>
                       <span className={`w-4 h-4 rounded flex items-center justify-center border ${showUnreleased ? 'bg-white border-white text-indigo-600' : 'bg-zinc-900 border-zinc-700 text-transparent'}`}><Check className="w-3 h-3 stroke-[3]" /></span>
                     </button>
@@ -1056,11 +1093,11 @@ export default function App() {
                 <div>
                   <label className="text-xs font-bold uppercase tracking-wider text-zinc-400 block mb-2">Status w kolekcji</label>
                   <div className="grid grid-cols-2 gap-2">
-                    <button type="button" onClick={() => setShowHundo((prev) => !prev)} className={`py-2.5 px-3 rounded-xl text-xs font-bold border transition-all flex items-center justify-between ${showHundo ? 'bg-[#dc2626] border-red-400 text-white' : 'bg-[#0f0f12] border-zinc-800 text-zinc-500'}`}>
+                    <button type="button" onClick={() => { setShowHundo((prev) => !prev); resetScrollToTop(); }} className={`py-2.5 px-3 rounded-xl text-xs font-bold border transition-all flex items-center justify-between ${showHundo ? 'bg-[#dc2626] border-red-400 text-white' : 'bg-[#0f0f12] border-zinc-800 text-zinc-500'}`}>
                       <span className="inline-flex items-center gap-1.5"><Flame className={`w-3.5 h-3.5 ${showHundo ? 'fill-white text-white' : 'text-zinc-600'}`} /> Hundo</span>
                       <span className={`w-4 h-4 rounded flex items-center justify-center border ${showHundo ? 'bg-white border-white text-[#dc2626]' : 'bg-zinc-900 border-zinc-700 text-transparent'}`}><Check className="w-3 h-3 stroke-[3]" /></span>
                     </button>
-                    <button type="button" onClick={() => setShowShiny((prev) => !prev)} className={`py-2.5 px-3 rounded-xl text-xs font-bold border transition-all flex items-center justify-between ${showShiny ? 'bg-gradient-to-r from-amber-300 to-yellow-500 border-amber-200 text-zinc-950' : 'bg-[#0f0f12] border-zinc-800 text-zinc-500'}`}>
+                    <button type="button" onClick={() => { setShowShiny((prev) => !prev); resetScrollToTop(); }} className={`py-2.5 px-3 rounded-xl text-xs font-bold border transition-all flex items-center justify-between ${showShiny ? 'bg-gradient-to-r from-amber-300 to-yellow-500 border-amber-200 text-zinc-950' : 'bg-[#0f0f12] border-zinc-800 text-zinc-500'}`}>
                       <span className="inline-flex items-center gap-1.5"><Star className={`w-3.5 h-3.5 ${showShiny ? 'fill-zinc-950 text-zinc-950' : 'text-zinc-600'}`} /> Shiny</span>
                       <span className={`w-4 h-4 rounded flex items-center justify-center border ${showShiny ? 'bg-zinc-950 border-zinc-950 text-amber-300' : 'bg-zinc-900 border-zinc-700 text-transparent'}`}><Check className="w-3 h-3 stroke-[3]" /></span>
                     </button>
@@ -1120,7 +1157,7 @@ export default function App() {
                       { id: '3', label: 'Poziom 3' },
                       { id: '4', label: 'Poziom 4 (Super)' }
                     ].map((lvl) => (
-                      <button key={lvl.id} type="button" onClick={() => setLevelFilter(lvl.id)} className={`py-2 px-2 rounded-xl text-xs font-bold border transition-colors ${levelFilter === lvl.id ? 'bg-[#dc2626] border-red-400 text-white' : 'bg-[#0f0f12] border-zinc-800 text-zinc-400'}`}>
+                      <button key={lvl.id} type="button" onClick={() => { setLevelFilter(lvl.id); resetScrollToTop(); }} className={`py-2 px-2 rounded-xl text-xs font-bold border transition-colors ${levelFilter === lvl.id ? 'bg-[#dc2626] border-red-400 text-white' : 'bg-[#0f0f12] border-zinc-800 text-zinc-400'}`}>
                         {lvl.label}
                       </button>
                     ))}
@@ -1136,7 +1173,7 @@ export default function App() {
                       { id: 'NAME_ASC', label: 'Nazwa A–Z' },
                       { id: 'LEVEL_DESC', label: 'Poziom Mega' }
                     ].map((srt) => (
-                      <button key={srt.id} type="button" onClick={() => setSortBy(srt.id)} className={`py-2.5 px-2 rounded-xl text-xs font-bold border transition-colors flex items-center justify-center gap-1 ${sortBy === srt.id ? 'bg-white text-[#0f0f12] border-white' : 'bg-[#0f0f12] border-zinc-800 text-zinc-400'}`}>
+                      <button key={srt.id} type="button" onClick={() => { setSortBy(srt.id); resetScrollToTop(); }} className={`py-2.5 px-2 rounded-xl text-xs font-bold border transition-colors flex items-center justify-center gap-1 ${sortBy === srt.id ? 'bg-white text-[#0f0f12] border-white' : 'bg-[#0f0f12] border-zinc-800 text-zinc-400'}`}>
                         {sortBy === srt.id && <Check className="w-3.5 h-3.5 text-[#dc2626]" />}
                         <span>{srt.label}</span>
                       </button>
